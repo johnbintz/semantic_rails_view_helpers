@@ -1,3 +1,5 @@
+require 'delegate'
+
 module SemanticRailsViewHelpers
   class AttributesBuilder < SimpleDelegator
     attr_reader :object
@@ -20,6 +22,8 @@ module SemanticRailsViewHelpers
       else
         value = @object.send(field)
       end
+
+      value = value.to_label if value.respond_to?(:to_label)
 
       value = @context.content_tag(:data, value, 'data-field' => field)
 
