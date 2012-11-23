@@ -18,17 +18,17 @@ module SemanticRailsViewHelpers
 
     def field(field, options = {})
       if options[:value]
-        value = options[:value]
+        raw_value = options[:value]
       else
-        value = @object.send(field)
+        raw_value = @object.send(field)
       end
 
+      value = raw_value
       value = value.to_label if value.respond_to?(:to_label)
-
       value = @context.content_tag(:data, value, 'data-field' => field)
 
       if options[:as]
-        value = @context.render(:partial => "attributes/#{options[:as]}", :locals => { :object => @object, :field => field, :value => value })
+        value = @context.render(:partial => "attributes/#{options[:as]}", :locals => { :object => @object, :field => field, :raw_value => raw_value, :value => value })
       end
 
       (value or '').html_safe
