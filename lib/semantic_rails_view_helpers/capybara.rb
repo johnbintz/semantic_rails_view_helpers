@@ -1,7 +1,9 @@
-def find_attribute(name)
+def find_attribute(name, value = nil)
   attribute = find("[data-field='#{name}']")
 
   yield attribute, @inputs[name] if block_given?
+
+  attribute.text.should == value if value
 
   attribute
 end
@@ -11,10 +13,19 @@ def find_input(name)
 end
 
 def set_input(name, value)
+  value = value.id if value.respond_to?(:id)
+
   @inputs ||= {}
   @inputs[name] = value
 
-  find_input(name).set(value)
+  input = find_input(name)
+
+  case input.tag_name.downcase
+  when 'select'
+    input.find("option[value='#{value}']").select_option
+  else
+    input.set(value)
+  end
 end
 
 def find_attributes(*attrs)
