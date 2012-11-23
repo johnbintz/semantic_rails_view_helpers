@@ -65,3 +65,7 @@ end
 def dont_find_object(object)
   dont_find("[data-id='#{object.id}']")
 end
+
+def find_object(object)
+  find("[data-id='#{object.id}']")
+end
