@@ -3,7 +3,7 @@ def find_attribute(name, value = nil)
 
   yield attribute, @inputs[name] if block_given?
 
-  attribute.text.should == value if value
+  attribute.text.should == value.to_s if value
 
   attribute
 end
@@ -30,7 +30,7 @@ end
 
 def find_attributes(*attrs)
   attrs.each do |attr|
-    find_attribute(attr).text.should == @inputs[attr]
+    find_attribute(attr).text.should == @inputs[attr].to_s
   end
 end
 
