@@ -16,11 +16,15 @@ module SemanticRailsViewHelpers
       @context.capture(self, &@block)
     end
 
-    def field(field, options = {})
+    def field(field, options = {}, &block)
       if options[:value]
         raw_value = options[:value]
       else
         raw_value = @object.send(field)
+
+        if block
+          raw_value = block.call(raw_value)
+        end
       end
 
       value = raw_value

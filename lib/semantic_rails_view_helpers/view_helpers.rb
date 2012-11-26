@@ -41,8 +41,8 @@ module SemanticRailsViewHelpers
       link_to label, polymorphic_url(route, :action => action), options.merge("data-action" => target_action)
     end
 
-    def li_for(object, &block)
-      content_tag(:li, capture(&block), 'data-id' => object.id)
+    def li_for(object, options = {}, &block)
+      content_tag(:li, capture(&block), options.merge('data-id' => object.id))
     end
   end
 end
