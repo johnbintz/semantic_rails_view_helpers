@@ -67,5 +67,34 @@ def dont_find_object(object)
 end
 
 def find_object(object)
-  find("[data-id='#{object.id}']")
+  find(object_matcher(object))
+end
+
+def within_object(object, &block)
+  within(object_matcher(object), &block)
+end
+
+def object_matcher(object)
+  "[data-id='#{object.id}'][data-type='#{object.class}']"
+end
+
+def within_object_of_type(klass, &block)
+  within("[data-type='#{klass}']", &block)
+end
+
+def within_any(search, &block)
+  case search
+  when Class
+    search = "[data-type='#{search}']"
+  end
+
+  all(search).each_with_index do |node, index|
+    begin
+      within("#{search}:eq(#{index + 1})", &block)
+      return true
+    rescue RSpec::Expectations::ExpectationNotMetError
+    end
+  end
+
+  false
 end
