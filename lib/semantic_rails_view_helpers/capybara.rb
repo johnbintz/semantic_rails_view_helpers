@@ -8,6 +8,12 @@ def find_attribute(name, value = nil)
   attribute
 end
 
+def has_attribute?(name, value)
+  attribute = find_attribute(name)
+
+  attribute.text == value
+end
+
 def find_input(name)
   find("[name$='[#{name}]']")
 end
@@ -98,3 +104,4 @@ def within_any(search, &block)
 
   false
 end
+

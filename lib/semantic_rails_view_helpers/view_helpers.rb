@@ -33,6 +33,10 @@ module SemanticRailsViewHelpers
         action = nil
       end
 
+      if action == :show
+        action = nil
+      end
+
       options = Hash[options.collect { |k, v| [ k, CGI.escapeHTML(v.to_s) ] }]
 
       route = model
