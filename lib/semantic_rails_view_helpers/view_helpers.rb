@@ -38,6 +38,10 @@ module SemanticRailsViewHelpers
         action = nil
       end
 
+      if action == :show
+        action = nil
+      end
+
       options = Hash[options.collect { |k, v| [ k, CGI.escapeHTML(v.to_s) ] }]
 
       route = model
@@ -47,7 +51,15 @@ module SemanticRailsViewHelpers
     end
 
     def li_for(object, options = {}, &block)
-      content_tag(:li, capture(&block), options.merge('data-id' => object.id))
+      type = begin
+               if object.respond_to?(:model)
+                 object.model.class
+               else
+                 object.class
+               end
+             end
+
+      content_tag(:li, capture(&block), options.merge('data-type' => type, 'data-id' => object.id))
     end
   end
 end
