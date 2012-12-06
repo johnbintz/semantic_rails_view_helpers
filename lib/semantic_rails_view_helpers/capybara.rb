@@ -85,7 +85,12 @@ def dont_find(search)
 end
 
 def dont_find_object(object)
-  dont_find("[data-id='#{object.id}']")
+  case object
+  when Class
+    dont_find("[data-type='#{object}']")
+  else
+    dont_find("[data-id='#{object.id}']")
+  end
 end
 
 def find_object(object)
