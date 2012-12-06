@@ -1,9 +1,14 @@
 require 'semantic_rails_view_helpers/attributes_builder'
+require 'semantic_rails_view_helpers/attributes_table_builder'
 
 module SemanticRailsViewHelpers
   module ViewHelpers
     def attributes_for(object, &block)
       AttributesBuilder.new(object, self, block)
+    end
+
+    def attributes_table_for(object, &block)
+      AttributesTableBuilder.new(object, self, block)
     end
 
     def link_to_route(route, *args)
