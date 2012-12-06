@@ -121,3 +121,6 @@ def within_any(search, &block)
   false
 end
 
+def refind_object(object)
+  object.class.find(object.id)
+end
