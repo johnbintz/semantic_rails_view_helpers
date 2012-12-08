@@ -1,29 +1,24 @@
-# SemanticRailsViewHelpers
+Make your Rails Capybara testing even faster and more accurate! Looking for text strings is for the birds.
 
-TODO: Write a gem description
+## Your Views
 
-## Installation
+Write out attributes using `attributes_for`:
 
-Add this line to your application's Gemfile:
+``` haml
+#object
+  = attributes_for object do |f|
+    %h2= f.field(:name)
+    %h3= f.field(:description)
+```
 
-    gem 'semantic_rails_view_helpers'
+Then look for those fields using Capybara! Because you shouldn't care about the DOM, just that your
+field is in there:
 
-And then execute:
+``` ruby
+@object = Object.create!(:name => @name, :description => @description)
 
-    $ bundle
+visit object_path(@object)
 
-Or install it yourself as:
-
-    $ gem install semantic_rails_view_helpers
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+find_attribute(:name, @object.name)
+find_attribute(:description, @object.description)
+```
