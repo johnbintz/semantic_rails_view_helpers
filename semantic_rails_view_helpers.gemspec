@@ -14,4 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "semantic_rails_view_helpers"
   gem.require_paths = ["lib"]
   gem.version       = SemanticRailsViewHelpers::VERSION
+
+  gem.add_dependency 'capybara'
+  gem.add_dependency 'rspec'
 end

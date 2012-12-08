@@ -71,7 +71,7 @@ module SemanticRailsViewHelpers
 
     def semantic_action_data(action)
       SemanticRailsViewHelpers.with_semantic_data do
-        { "data-action" => target_action }
+        { "data-action" => action }
       end
     end
 
