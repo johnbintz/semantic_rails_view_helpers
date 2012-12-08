@@ -29,7 +29,10 @@ module SemanticRailsViewHelpers
 
       value = raw_value
       value = value.to_label if value.respond_to?(:to_label)
-      value = @context.content_tag(:data, value, 'data-field' => field)
+
+      if SemanticRailsViewHelpers.semantic_data?
+        value = @context.content_tag(:data, value, 'data-field' => field)
+      end
 
       if options[:as]
         value = @context.render(:partial => "attributes/#{options[:as]}", :locals => { :object => @object, :field => field, :raw_value => raw_value, :value => value })

@@ -7,25 +7,25 @@ module SemanticRailsViewHelpers
       AttributesBuilder.new(object, self, block)
     end
 
-    def attributes_table_for(object, &block)
-      AttributesTableBuilder.new(object, self, block)
+    def attributes_table_for(object, options = {}, &block)
+      AttributesTableBuilder.new(object, options, self, block)
     end
 
     def link_to_route(route, *args)
-      link_to t(".#{route}"), send("#{route}_path", *args), 'data-link' => route
+      link_to t(".#{route}"), send("#{route}_path", *args), semantic_link_data(route)
     end
 
     def link_to_collection(route)
       collection = route.last
 
-      link_to t(".#{collection}"), polymorphic_url(route), 'data-link' => collection
+      link_to t(".#{collection}"), polymorphic_url(route), semantic_link_data(collection)
     end
 
     def link_to_model(model)
       route = model
       route = route.to_route if route.respond_to?(:to_route)
 
-      link_to model.to_label, polymorphic_url(route), 'data-action' => 'show'
+      link_to model.to_label, polymorphic_url(route), semantic_model_data(model).merge(semantic_action_data('show'))
     end
 
     def link_to_model_action(model, action = :show, options = {})
@@ -47,19 +47,38 @@ module SemanticRailsViewHelpers
       route = model
       route = route.to_route if route.respond_to?(:to_route)
 
-      link_to label, polymorphic_url(route, :action => action), options.merge("data-action" => target_action)
+      link_to label, polymorphic_url(route, :action => action), options.merge(semantic_action_data(target_action))
     end
 
     def li_for(object, options = {}, &block)
-      type = begin
-               if object.respond_to?(:model)
-                 object.model.class
-               else
-                 object.class
-               end
-             end
+      content_tag(:li, capture(&block), options.merge(semantic_model_data(object)))
+    end
 
-      content_tag(:li, capture(&block), options.merge('data-type' => type, 'data-id' => object.id))
+    private
+    def semantic_model_data(object)
+      SemanticRailsViewHelpers.with_semantic_data do
+        type = begin
+                 if object.respond_to?(:model)
+                   object.model.class
+                 else
+                   object.class
+                 end
+               end
+
+        { 'data-type' => type, 'data-id' => object.id }
+      end
+    end
+
+    def semantic_action_data(action)
+      SemanticRailsViewHelpers.with_semantic_data do
+        { "data-action" => target_action }
+      end
+    end
+
+    def semantic_link_data(link)
+      SemanticRailsViewHelpers.with_semantic_data do
+        { 'data-link' => link }
+      end
     end
   end
 end

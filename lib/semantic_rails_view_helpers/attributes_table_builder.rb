@@ -2,8 +2,17 @@ require 'semantic_rails_view_helpers/attributes_builder_base'
 
 module SemanticRailsViewHelpers
   class AttributesTableBuilder < AttributesBuilderBase
+    def initialize(object, options, context, block)
+      super(object, context, block)
+
+      @options = options
+    end
+
     def to_s
-      @context.content_tag(:table) do
+      @options[:class] ||= ''
+      @options[:class] << 'attributes table'
+
+      @context.content_tag(:table, @options) do
         @context.capture(self, &@block)
       end
     end
