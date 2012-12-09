@@ -12,13 +12,18 @@ module SemanticRailsViewHelpers
     end
 
     def link_to_route(route, *args)
-      link_to t(".#{route}"), send("#{route}_path", *args), semantic_link_data(route)
+      options = {}
+      if args.last.kind_of?(::Hash)
+        options = args.pop
+      end
+
+      link_to t(".#{route}"), send("#{route}_path", *args), semantic_link_data(route).merge(options)
     end
 
-    def link_to_collection(route)
+    def link_to_collection(route, options = {})
       collection = route.last
 
-      link_to t(".#{collection}"), polymorphic_url(route), semantic_link_data(collection)
+      link_to t(".#{collection}"), polymorphic_url(route), semantic_link_data(collection).merge(options)
     end
 
     def link_to_model(model)
