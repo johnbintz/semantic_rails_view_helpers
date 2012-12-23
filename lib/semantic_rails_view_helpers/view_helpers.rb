@@ -52,10 +52,7 @@ module SemanticRailsViewHelpers
       route = model
       route = route.to_route if route.respond_to?(:to_route)
 
-      data = semantic_action_data(target_action)
-      if action != :new
-        data.merge!(semantic_model_data(model))
-      end
+      data = semantic_action_data(target_action).merge(semantic_model_data(model))
 
       link_to label, polymorphic_url(route, :action => action), options.merge(data)
     end
@@ -75,7 +72,12 @@ module SemanticRailsViewHelpers
                  end
                end
 
-        { 'data-type' => type, 'data-id' => object.id }
+        output = { 'data-type' => type }
+        if !object.new_record?
+          output['data-id'] = object.id
+        end
+
+        output
       end
     end
 
