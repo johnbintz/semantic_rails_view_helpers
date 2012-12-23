@@ -73,7 +73,8 @@ module SemanticRailsViewHelpers
                end
 
         output = { 'data-type' => type }
-        if !object.new_record?
+
+        if object.respond_to?(:id)
           output['data-id'] = object.id
         end
 
