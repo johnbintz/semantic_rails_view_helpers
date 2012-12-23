@@ -58,6 +58,10 @@ def find_action(action)
   find("[data-action='#{action}']")
 end
 
+def find_object_action(object, action)
+  find("[data-type='#{object}'][data-action='#{action}']")
+end
+
 module Capybara
   class ElementFound < StandardError
     def initialize(search)
@@ -115,11 +119,15 @@ def within_any(search, &block)
     search = "[data-type='#{search}']"
   end
 
-  all(search).each_with_index do |node, index|
+  nodes = all(search)
+
+  raise Capybara::ElementNotFound if nodes.empty?
+
+  nodes.each_with_index do |node, index|
     begin
       within("#{search}:eq(#{index + 1})", &block)
       return true
-    rescue RSpec::Expectations::ExpectationNotMetError
+    rescue RSpec::Expectations::ExpectationNotMetError, Capybara::ElementNotFound
     end
   end
 
