@@ -137,3 +137,7 @@ end
 def refind_object(object)
   object.class.find(object.id)
 end
+
+def find_semantic_link(link)
+  find("[data-link='#{link}']")
+end
