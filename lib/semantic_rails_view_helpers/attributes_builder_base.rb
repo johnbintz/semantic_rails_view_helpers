@@ -30,6 +30,10 @@ module SemanticRailsViewHelpers
       value = raw_value
       value = value.to_label if value.respond_to?(:to_label)
 
+      if options[:raw]
+        value = value.html_safe
+      end
+
       if SemanticRailsViewHelpers.semantic_data?
         value = @context.content_tag(:data, value, 'data-field' => field)
       end
@@ -39,6 +43,10 @@ module SemanticRailsViewHelpers
       end
 
       (value or '').html_safe
+    end
+
+    def field!(field, options = {}, &block)
+      self.field(field, options.merge(:raw => true), &block)
     end
 
     class TagBuilder

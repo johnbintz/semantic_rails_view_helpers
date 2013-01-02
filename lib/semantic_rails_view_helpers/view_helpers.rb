@@ -36,7 +36,7 @@ module SemanticRailsViewHelpers
     def link_to_model_action(model, action = :show, options = {})
       target_action = action
 
-      label = options.delete(:label) || t(".#{action}")
+      label = options.delete(:label) || t(".#{model.class.name.underscore}.#{action}")
 
       if action == :destroy
         options = options.merge(:method => :delete, 'data-skip-pjax' => 'true')
@@ -52,7 +52,9 @@ module SemanticRailsViewHelpers
       route = model
       route = route.to_route if route.respond_to?(:to_route)
 
-      link_to label, polymorphic_url(route, :action => action), options.merge(semantic_action_data(target_action))
+      data = semantic_action_data(target_action).merge(semantic_model_data(model))
+
+      link_to label, polymorphic_url(route, :action => action), options.merge(data)
     end
 
     def li_for(object, options = {}, &block)
@@ -70,7 +72,13 @@ module SemanticRailsViewHelpers
                  end
                end
 
-        { 'data-type' => type, 'data-id' => object.id }
+        output = { 'data-type' => type }
+
+        if object.respond_to?(:id)
+          output['data-id'] = object.id
+        end
+
+        output
       end
     end
 
