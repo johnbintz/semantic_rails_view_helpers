@@ -42,7 +42,7 @@ module SemanticRailsViewHelpers
         value = @context.render(:partial => "attributes/#{options[:as]}", :locals => { :object => @object, :field => field, :raw_value => raw_value, :value => value })
       end
 
-      (value or '').html_safe
+      (value or '').to_s.html_safe
     end
 
     def field!(field, options = {}, &block)
