@@ -5,7 +5,7 @@ module SemanticRailsViewHelpers
     initializer 'semantic_rails_view_helpers.initialize', :before => :load_config_initializers do |app|
       ActionView::Base.send :include, SemanticRailsViewHelpers::ViewHelpers
 
-      app.config.add_semantic_data = false if app.config.add_semantic_data.blank?
+      app.config.add_semantic_data = false if !app.config.respond_to?(:add_semantic_data)
     end
   end
 end
