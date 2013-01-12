@@ -26,11 +26,11 @@ module SemanticRailsViewHelpers
       link_to t(".#{collection}"), polymorphic_url(route), semantic_link_data(collection).merge(options)
     end
 
-    def link_to_model(model)
+    def link_to_model(model, options = {})
       route = model
       route = route.to_route if route.respond_to?(:to_route)
 
-      link_to model.to_label, polymorphic_url(route), semantic_model_data(model).merge(semantic_action_data('show'))
+      link_to model.to_label, polymorphic_url(route), semantic_model_data(model).merge(semantic_action_data('show')).merge(options)
     end
 
     def link_to_model_action(model, action = :show, options = {})
