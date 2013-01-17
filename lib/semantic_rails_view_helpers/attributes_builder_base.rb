@@ -31,7 +31,7 @@ module SemanticRailsViewHelpers
       value = value.to_label if value.respond_to?(:to_label)
 
       if options[:raw]
-        value = value.html_safe
+        value = (value || '').html_safe
       end
 
       if SemanticRailsViewHelpers.semantic_data?
