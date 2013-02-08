@@ -77,6 +77,10 @@ end
 def dont_find_wrap(search)
   yield
 
+  sleep Capybara.default_wait_time
+
+  yield
+
   raise Capybara::ElementFound.new(search)
 rescue Capybara::ElementNotFound
   true
