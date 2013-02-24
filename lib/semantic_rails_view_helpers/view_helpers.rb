@@ -65,8 +65,8 @@ module SemanticRailsViewHelpers
     def semantic_model_data(object)
       SemanticRailsViewHelpers.with_semantic_data do
         type = begin
-                 if object.respond_to?(:model)
-                   object.model.class
+                 if object.respond_to?(:source) and object.respond_to?(:to_source)
+                   object.source.class
                  else
                    object.class
                  end
