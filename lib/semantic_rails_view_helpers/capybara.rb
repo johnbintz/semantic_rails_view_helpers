@@ -77,6 +77,10 @@ end
 def dont_find_wrap(search)
   yield
 
+  sleep Capybara.default_wait_time
+
+  yield
+
   raise Capybara::ElementFound.new(search)
 rescue Capybara::ElementNotFound
   true
@@ -106,11 +110,17 @@ def within_object(object, &block)
 end
 
 def object_matcher(object)
-  "[data-id='#{object.id}'][data-type='#{object.class}']"
+  if object.respond_to?(:id)
+    match = "[data-type='#{object.class}'][data-id='#{object.id}']"
+  elsif object.kind_of?(::Class)
+    match = "[data-type='#{object}']"
+  end
+
+  match
 end
 
 def within_object_of_type(klass, &block)
-  within("[data-type='#{klass}']", &block)
+  within_object(klass, &block)
 end
 
 def within_any(search, &block)
