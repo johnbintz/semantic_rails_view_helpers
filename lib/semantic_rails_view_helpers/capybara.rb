@@ -62,6 +62,26 @@ def find_object_action(object, action)
   find("[data-type='#{object}'][data-action='#{action}']")
 end
 
+module DontFindable
+  def dont_find_wrap(search)
+    yield
+
+    sleep Capybara.default_wait_time
+
+    yield
+
+    raise Capybara::ElementFound.new(search)
+  rescue Capybara::ElementNotFound
+    true
+  end
+
+  def dont_find(search)
+    dont_find_wrap(search) do
+      find(search)
+    end
+  end
+end
+
 module Capybara
   class ElementFound < StandardError
     def initialize(search)
@@ -72,25 +92,13 @@ module Capybara
       @search
     end
   end
-end
 
-def dont_find_wrap(search)
-  yield
-
-  sleep Capybara.default_wait_time
-
-  yield
-
-  raise Capybara::ElementFound.new(search)
-rescue Capybara::ElementNotFound
-  true
-end
-
-def dont_find(search)
-  dont_find_wrap(search) do
-    find(search)
+  class Node::Element
+    include DontFindable
   end
 end
+
+include DontFindable
 
 def dont_find_object(object)
   case object

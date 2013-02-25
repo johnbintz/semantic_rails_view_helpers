@@ -89,5 +89,9 @@ Sometimes the absence of a thing is just as important as the presence of a thing
 # selector's not there
 
 dont_find('#user')
+
+# ...after you've already found something...
+
+find('.node').dont_find('.something_inside')
 ```
 
