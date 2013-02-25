@@ -6,25 +6,9 @@ class ActiveAdmin::Views::AttributesTable
       th do
         header_content_for(attr)
       end
-      td do
-        content_for(attr, block)
+      td 'data-field' => attr do
+        content_for(block || attr)
       end
     end
-  end
-
-  protected
-  def content_for(attr, block)
-    value = begin
-              if block
-                block.call(@record)
-              else
-                content_for_attribute(attr)
-              end
-            end
-
-    value = pretty_format(value)
-    value == "" || value.nil? ? empty_value : value
-
-    %{<data data-field="#{attr}">#{value}</data>}.html_safe
   end
 end
