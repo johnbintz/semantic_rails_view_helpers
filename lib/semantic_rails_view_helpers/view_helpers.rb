@@ -7,9 +7,13 @@ module SemanticRailsViewHelpers
       AttributesBuilder.new(object, self, block)
     end
 
+    alias :semantic_attributes_for :attributes_for
+
     def attributes_table_for(object, options = {}, &block)
       AttributesTableBuilder.new(object, options, self, block)
     end
+
+    alias :semantic_attributes_table_for :attributes_table_for
 
     def link_to_route(route, *args)
       options = {}

@@ -76,6 +76,11 @@ You can even make simple tables, a la Active Admin:
     = f.field :description
 ```
 
+### Active Admin
+
+You can add semantic data to Active Admin's `attributes_table`s in `show` views. Just `require 'semantic_rails_view_helpers/active_admin'`
+in an initializer and you can then target attributes in `show` views.
+
 ## Not Finding Things
 
 Sometimes the absence of a thing is just as important as the presence of a thing. Make it easy on yourself:
