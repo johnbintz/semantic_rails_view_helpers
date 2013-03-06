@@ -10,7 +10,7 @@ module SemanticRailsViewHelpers
 
     def to_s
       @options[:class] ||= ''
-      @options[:class] << 'attributes table'
+      @options[:class] << ' attributes table'
 
       @context.content_tag(:table, @options) do
         @context.capture(self, &@block)
