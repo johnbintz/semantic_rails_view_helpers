@@ -17,9 +17,9 @@ module SemanticRailsViewHelpers
     end
 
     def field(field, options = {}, &block)
-      if options[:value]
-        raw_value = options[:value]
-      else
+      raw_value = options.delete(:value)
+
+      if !raw_value
         raw_value = @object.send(field)
 
         if block
@@ -30,12 +30,12 @@ module SemanticRailsViewHelpers
       value = raw_value
       value = value.to_label if value.respond_to?(:to_label)
 
-      if options[:raw]
+      if options.delete(:raw)
         value = (value || '').html_safe
       end
 
       if SemanticRailsViewHelpers.semantic_data?
-        value = @context.content_tag(:data, value, 'data-field' => field)
+        value = @context.content_tag(:data, value, options.merge('data-field' => field))
       end
 
       if options[:as]
