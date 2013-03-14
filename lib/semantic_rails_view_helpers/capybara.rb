@@ -20,8 +20,8 @@ def has_attribute?(name, value)
   attribute.text == value
 end
 
-def find_input(name)
-  find("[name$='[#{name}]']")
+def find_input(name, additional_search = '')
+  find("[name$='[#{name}]']#{additional_search}")
 end
 
 def set_input(name, value)
@@ -30,7 +30,12 @@ def set_input(name, value)
   @inputs ||= {}
   @inputs[name] = value
 
-  input = find_input(name)
+  input = case value
+  when true, false
+    find_input(name, '[type=checkbox]')
+  else
+    find_input(name)
+  end
 
   case input.tag_name.downcase
   when 'select'
