@@ -56,7 +56,7 @@ def set_input(name, value)
     begin
       input.find("option[value='#{value}']").select_option
     rescue Capybara::ElementNotFound
-      input.find("option[text()='#{value}']").select_option
+      input.find(:xpath, "./option[text()='#{value}']").select_option
     end
   else
     input.set(value)
