@@ -21,7 +21,12 @@ def has_attribute?(name, value)
 end
 
 def find_input(name, additional_search = '')
-  find("[name$='[#{name}]']#{additional_search}")
+  search = "[#{name}]"
+  if name[/\[\]$/]
+    search = "[#{name[0..-3]}][]"
+  end
+
+  find("[name$='#{search}']#{additional_search}")
 end
 
 def set_input(name, value)
@@ -34,7 +39,16 @@ def set_input(name, value)
   when true, false
     find_input(name, '[type=checkbox]')
   else
-    find_input(name)
+    begin
+      find_input(name)
+    rescue Capybara::ElementNotFound
+      search_value = value
+      search_value = value.id if value.respond_to?(:id)
+
+      result = find_input("#{name}_ids[]", "[value='#{search_value}']")
+      value = true
+      result
+    end
   end
 
   case input.tag_name.downcase
