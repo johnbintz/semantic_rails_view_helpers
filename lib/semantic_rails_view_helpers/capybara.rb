@@ -20,13 +20,13 @@ def has_attribute?(name, value)
   attribute.text == value
 end
 
-def find_input(name, additional_search = '')
+def find_input(name, additional_search = '', type = '')
   search = "[#{name}]"
   if name[/\[\]$/]
     search = "[#{name[0..-3]}][]"
   end
 
-  find("[name$='#{search}']#{additional_search}")
+  find("#{type}[name$='#{search}']#{additional_search}")
 end
 
 def set_input(name, value)
@@ -40,14 +40,24 @@ def set_input(name, value)
     find_input(name, '[type=checkbox]')
   else
     begin
+      # normal
+
       find_input(name)
     rescue Capybara::ElementNotFound
-      search_value = value
-      search_value = value.id if value.respond_to?(:id)
+      begin
+        # select multiple
 
-      result = find_input("#{name}_ids[]", "[value='#{search_value}']")
-      value = true
-      result
+        find_input("#{name}[]", '', 'select')
+      rescue Capybara::ElementNotFound
+        # checkboxes/radio
+
+        search_value = value
+        search_value = value.id if value.respond_to?(:id)
+
+        result = find_input("#{name}_ids[]", "[value='#{search_value}']", 'input')
+        value = true
+        result
+      end
     end
   end
 
