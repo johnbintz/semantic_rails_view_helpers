@@ -26,8 +26,9 @@ module SemanticRailsViewHelpers
 
     def link_to_collection(route, options = {})
       collection = route.last
+      options[:label] ||= t(".#{collection}")
 
-      link_to t(".#{collection}"), polymorphic_url(route), semantic_link_data(collection).merge(options)
+      link_to options[:label], polymorphic_url(route), semantic_link_data(collection).merge(options)
     end
 
     def link_to_model(model, options = {})

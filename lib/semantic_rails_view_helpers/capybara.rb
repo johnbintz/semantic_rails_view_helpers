@@ -20,6 +20,14 @@ def has_attribute?(name, value)
   attribute.text == value
 end
 
+def find_first(search)
+  omatch = Capybara.match
+  Capybara.match = :first
+  result = find(search)
+  Capybara.match = omatch
+  result
+end
+
 def find_input(name, additional_search = '', type = '')
   search = "[#{name}]"
   if name[/\[\]$/]
