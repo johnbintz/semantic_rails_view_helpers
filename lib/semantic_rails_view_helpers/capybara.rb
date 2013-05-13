@@ -180,7 +180,7 @@ def within_any(search, &block)
 
   nodes.each_with_index do |node, index|
     begin
-      within("#{search}:eq(#{index + 1})", &block)
+      within("#{search}:nth-child(#{index + 1})", &block)
       return true
     rescue RSpec::Expectations::ExpectationNotMetError, Capybara::ElementNotFound
     end
