@@ -96,7 +96,7 @@ def find_action(action)
 end
 
 def find_object_action(object, action)
-  find("[data-type='#{object}'][data-action='#{action}']")
+  find("#{object_matcher(object)}[data-action='#{action}']")
 end
 
 module DontFindable
