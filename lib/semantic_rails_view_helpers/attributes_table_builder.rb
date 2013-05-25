@@ -12,6 +12,8 @@ module SemanticRailsViewHelpers
       @options[:class] ||= ''
       @options[:class] << ' attributes table'
 
+      @options.merge!(@context.send(:semantic_model_data, @object))
+
       @context.content_tag(:table, @options) do
         @context.capture(self, &@block)
       end

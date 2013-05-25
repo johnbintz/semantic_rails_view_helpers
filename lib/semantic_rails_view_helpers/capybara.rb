@@ -24,7 +24,7 @@ def find_first(search)
   omatch = Capybara.match
   Capybara.match = :first
   result = find(search)
-  Capybara.match = omatch
+Capybara.match = omatch
   result
 end
 
@@ -178,15 +178,18 @@ def within_any(search, &block)
 
   raise Capybara::ElementNotFound if nodes.empty?
 
+  exceptions = []
+
   nodes.each_with_index do |node, index|
     begin
       within("#{search}:nth-child(#{index + 1})", &block)
       return true
-    rescue RSpec::Expectations::ExpectationNotMetError, Capybara::ElementNotFound
+    rescue RSpec::Expectations::ExpectationNotMetError, Capybara::ElementNotFound => e
+      exceptions << e
     end
   end
 
-  false
+  raise exceptions.last
 end
 
 def refind_object(object)
