@@ -21,7 +21,9 @@ module SemanticRailsViewHelpers
         options = args.pop
       end
 
-      link_to t(".#{route}"), send("#{route}_path", *args), semantic_link_data(route).merge(options)
+      label = options.delete(:label) || t(".#{route}")
+
+      link_to label, send("#{route}_path", *args), semantic_link_data(route).merge(options)
     end
 
     def link_to_collection(route, options = {})
