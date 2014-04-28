@@ -1,5 +1,18 @@
-def find_attribute(name, value = nil)
-  attribute = find("[data-field='#{name}']")
+def find_attribute(name, options_or_value = nil, options = nil)
+  if options
+    value = options_or_value
+  else
+    case options_or_value
+    when Hash
+      options = options_or_value
+      value = nil
+    else
+      value = options_or_value
+      options = {}
+    end
+  end
+
+  attribute = find("[data-field='#{name}']", options)
 
   yield attribute, @inputs[name] if block_given?
 
