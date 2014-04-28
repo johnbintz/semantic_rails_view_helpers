@@ -21,11 +21,7 @@ def has_attribute?(name, value)
 end
 
 def find_first(search)
-  omatch = Capybara.match
-  Capybara.match = :first
-  result = find(search)
-Capybara.match = omatch
-  result
+  find(search, match: :first)
 end
 
 def find_input(name, additional_search = '', type = '')
@@ -113,8 +109,8 @@ module DontFindable
   end
 
   def dont_find(search)
-    dont_find_wrap(search) do
-      find(search)
+    if !has_no_selector?(search)
+      raise Capybara::ElementFound.new(search)
     end
   end
 end
